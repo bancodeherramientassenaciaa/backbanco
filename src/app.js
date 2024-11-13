@@ -26,8 +26,15 @@ import importarExcel from './routes/excelRouter.js';
 
 const app = express();
 
+// Configura CORS para permitir solo el dominio de tu frontend en Vercel
+const corsOptions = {
+  origin: 'https://bancoherramientasciaa.vercel.app', // Reemplaza con tu dominio de frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  allowedHeaders: ['Content-Type', 'Authorization'] // Encabezados permitidos
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Rutas
