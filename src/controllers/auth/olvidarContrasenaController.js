@@ -67,7 +67,7 @@ const solicitarNuevaContrasena = async (req, res) => {
         }, config.jwt.secretnewcontrasena, { expiresIn: '10m' }); // Expira en 1 hora
 
         if (token) {
-            const recoveryLink = `http://localhost:5173/restablecer-contrasena/${token}`;
+            const recoveryLink = `https://bancoherramientasciaa.vercel.app/restablecer-contrasena/${token}`;
             await sendRecoveryEmail(usuario.correo, recoveryLink);
         }
 

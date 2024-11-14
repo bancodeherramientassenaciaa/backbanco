@@ -99,7 +99,11 @@ const updateAdmin = async (req, res) => {
 // Eliminar un Administrador
 const deleteAdmin = async (req, res) => {
     try {
-        const { area } = req.user;
+        const { area, id: adminId } = req.user;
+
+        if (adminId == req.params.documento) {
+            return res.status(400).json({mensaje: 'No puedes eliminarte ti mismo, pídele a otro administrador con el mismo nivel de permisos o superior que lo haga'});
+        }
         
         if (area == 0) {
             await Administrador.destroy({
