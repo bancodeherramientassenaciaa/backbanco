@@ -25,7 +25,7 @@ const formatFecha = (fecha, ajusteHoras = 0) => {
 };
 
 const ajustarHora = (date) => {
-  const offset = 13; // Esto es para cuadrar las horas manualmente porque en la bd se están guardando las hroas con un desface de 5 horas
+  const offset = 14; // Esto es para cuadrar las horas manualmente porque en la bd se están guardando las hroas con un desface de 5 horas
   const adjustedDate = new Date(date.getTime() + offset * 60 * 60 * 1000);
   return format(adjustedDate, 'yyyy-MM-dd HH:mm:ss', { locale: es });
 };
