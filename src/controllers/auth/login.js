@@ -8,7 +8,7 @@ import { prestamosesManana } from '../prestamoEspecialController.js';
 //Login 
 const login = async (req, res) => {
 
-    const { documento, contrasena } = req.body;
+    const { documento, contrasena } = req.body; console.log(new Date())
   
     try {
 
