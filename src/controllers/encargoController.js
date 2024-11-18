@@ -3,6 +3,8 @@ import { Encargo, ElementoHasEncargo, Cliente, Elemento, Area, PrestamoCorriente
 import { ajustarHora, formatFecha } from './auth/adminsesionController.js';
 import { createRecord } from './historialController.js';
 
+const obtenerHoraActual = () => ajustarHora(new Date());
+
 // INSTRUCTOR CREA EL ENCARGO
 const createEncargo = async (req, res) => {
     try {
@@ -17,7 +19,7 @@ const createEncargo = async (req, res) => {
             return res.status(400).json({ mensaje: 'Debes ingresar todos los datos'})
         }
         // esta constante debe ir después de la validación de arriba porque sino saldrá error de 'Invalid time value' al intentar ajustar la hora en caso de que no se haya indicado la fecha desde el front y sea undefined
-        const fechaReclamo = ajustarHora(fecha_reclamo); 
+        const fechaReclamo = fecha_reclamo; 
         // Obtener la fecha actual en formato 'YYYY-MM-DD'
         const currentDate = new Date().toISOString().split('T')[0];
 
