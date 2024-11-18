@@ -19,7 +19,7 @@ const createEncargo = async (req, res) => {
             return res.status(400).json({ mensaje: 'Debes ingresar todos los datos'})
         }
         // esta constante debe ir después de la validación de arriba porque sino saldrá error de 'Invalid time value' al intentar ajustar la hora en caso de que no se haya indicado la fecha desde el front y sea undefined
-        const fechaReclamo = fecha_reclamo; 
+        const fechaReclamo = ajustarHora(new Date(fecha_reclamo)); console.log(new Date(fecha_reclamo))
         // Obtener la fecha actual en formato 'YYYY-MM-DD'
         const currentDate = new Date().toISOString().split('T')[0];
 
