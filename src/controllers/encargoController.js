@@ -1,7 +1,15 @@
 import { Op, Sequelize } from 'sequelize';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale'; 
 import { Encargo, ElementoHasEncargo, Cliente, Elemento, Area, PrestamoCorriente, ElementoHasPrestamoCorriente } from '../models/index.js';
-import { ajustarHora, formatFecha } from './auth/adminsesionController.js';
+import { formatFecha, ajustarHora } from './auth/adminsesionController.js';
 import { createRecord } from './historialController.js';
+
+const ajustarHoraEncargo = (date) => {
+    const offset = -7; // Esto es para cuadrar las horas manualmente porque en la bd se están guardando las hroas con un desface de 5 horas
+    const adjustedDate = new Date(date.getTime() + offset * 60 * 60 * 1000);
+    return format(adjustedDate, 'yyyy-MM-dd HH:mm:ss', { locale: es });
+};
 
 const obtenerHoraActual = () => ajustarHora(new Date());
 
@@ -19,7 +27,7 @@ const createEncargo = async (req, res) => {
             return res.status(400).json({ mensaje: 'Debes ingresar todos los datos'})
         }
         // esta constante debe ir después de la validación de arriba porque sino saldrá error de 'Invalid time value' al intentar ajustar la hora en caso de que no se haya indicado la fecha desde el front y sea undefined
-        const fechaReclamo = ajustarHora(new Date(fecha_reclamo)); 
+        const fechaReclamo = ajustarHoraEncargo(new Date(fecha_reclamo)); 
         // Obtener la fecha actual en formato 'YYYY-MM-DD'
         const currentDate = new Date().toISOString().split('T')[0];
 
