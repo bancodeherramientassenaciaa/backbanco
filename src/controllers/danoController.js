@@ -23,6 +23,10 @@ const returnDano = async (req, res) => {
       const { area, id: adminId } = req.user;
       const { iddano, idelemento, cantidadDevuelta, observaciones, documento } = req.body;
 
+      if (!observaciones || observaciones == '') {
+        return res.status(400).json({mensaje: 'Las observaciones son obligatorias'});
+      }
+
       const cliente = await Cliente.findOne({ where: {documento: documento}});
       const elemento = await Elemento.findOne({where: {idelemento: idelemento}});
 
