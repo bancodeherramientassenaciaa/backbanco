@@ -264,6 +264,9 @@ const addOrUpdate = async (req, res) => {
                         }
                     } else if (estado == 'dano') {
                         if (cantidadNueva != 0) {
+                            if (!observaciones || observaciones == '') {
+                                return res.status(400).json({mensaje: 'Las observaciones son obligatorias para resportar el daño de un elemento'});
+                            }
                             const dano = await createDano(cantidadNueva, observaciones, idelemento, prestamo.clientes_documento, area);
                             await Elemento.update(
                                 {

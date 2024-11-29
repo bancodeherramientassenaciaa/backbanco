@@ -450,7 +450,7 @@ const cancelAceptar = async (req, res) => {
                 await ElementoHasEncargo.update({estado: 'pendiente'}, {where: {encargos_idencargo: idencargo}});
             }
         }
-        createRecord(area,'encargo', idencargo, adminId, documento, cliente.nombre, '', '', '', '', 'pendiente', 'CANCELAR ENCARGO ACEPTADO'); 
+        createRecord(area,'encargo', idencargo, adminId, documento, cliente.nombre, 0, '', 0, '', 'pendiente', 'CANCELAR ENCARGO ACEPTADO'); 
 
         res.status(200).json({mensaje: 'Encargo pasado a pendientes correctamente'})
     } catch (error) {
@@ -584,7 +584,7 @@ const noReclamarEncargo = async (req, res) => {
         await Encargo.destroy ({
             where: { idencargo: idencargo }
         });
-        createRecord(area,'encargo', idencargo, adminId, encargo.clientes_documento, cliente.nombre, '', '', '', '', 'no reclamado', 'NO RECLAMÓ ENCARGO'); 
+        createRecord(area,'encargo', idencargo, adminId, encargo.clientes_documento, cliente.nombre, 0, '', 0, '', 'no reclamado', 'NO RECLAMÓ ENCARGO'); 
         return res.status(200).json({mensaje: 'Se ha guardado el historial de no reclamado correctamnete'})
     } catch (error) {
         console.log(error)
@@ -602,7 +602,7 @@ const finalizarEncargo = async (req, res) => {
         await Encargo.destroy ({
             where: { idencargo: idencargo }
         });
-        createRecord(area,'encargo', idencargo, adminId, encargo.clientes_documento, cliente.nombre, '', '', '', '', 'finalizado', 'FINALIZAR ENCARGO'); 
+        createRecord(area,'encargo', idencargo, adminId, encargo.clientes_documento, cliente.nombre, 0, '', 0, '', 'finalizado', 'FINALIZAR ENCARGO'); 
         return res.status(200).json({mensaje: 'Se ha guardado el historial de no reclamado correctamnete'})
     } catch (error) {
         console.log(error)
