@@ -111,7 +111,7 @@ const addElementsEncargo = async (req, res) => {
             }
 
             if (dispoTotal < cantidad) {
-                return res.status(400).json({ mensaje: `Cierta cantidad del elemento ${elementoEncontrado.descripcion} ha sido encargada por otro instructor para la misma fecha y hora antes que tú, te queda un total máximo de ${dispoTotal} para encargar.` });
+                return res.status(400).json({ mensaje: `Del elemento ${elementoEncontrado.descripcion} queda un total máximo de ${dispoTotal} para encargar.` });
             }
 
             // const elementoYaEncargado = await ElementoHasEncargo.findOne({where: {encargos_idencargo: idencargo, elementos_idelemento: idelemento}});
