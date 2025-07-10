@@ -9,13 +9,13 @@ import config from './config/config.js';
 import loginRoute from './routes/auth/loginRouter.js';
 import logoutRoute from './routes/auth/logoutRouter.js';
 import areaRoutes from './routes/areaRouter.js';
-import historialRoute from './routes/historialRouter.js'
+import historialRoute from './routes/historialRouter.js';
 import adminRoutes from './routes/administradorRouter.js';
 import clientRoutes from './routes/clienteRouter.js';
 import roleRoutes from './routes/rolRouter.js';
 import elementRoutes from './routes/elementoRouter.js';
 import prestamoCorrienteRoutes from './routes/prestamoCorrienteRouter.js';
-import prestamoEspecialRoutes from './routes/prestamoEspecialRouter.js'
+import prestamoEspecialRoutes from './routes/prestamoEspecialRouter.js';
 import consumoRoutes from './routes/consumoRouter.js';
 import moraRoutes from './routes/moraRouter.js';
 import danoRoutes from './routes/danoRouter.js';
@@ -29,11 +29,13 @@ const app = express();
 // Configura CORS para permitir solo el dominio de tu frontend en Vercel
 const allowedOrigins = [
   'https://frontbanco.vercel.app',
-  'https://frontbanco.vercel.app', // o el dominio generado en tu Vercel (ver en el dashboard)
+  // Si usas un dominio preview, agrégalo aquí:
+  // 'https://frontbanco-preview.vercel.app'
 ];
 
 const corsOptions = {
   origin: (origin, callback) => {
+    // Permite requests sin origin (Postman, curl, etc.)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -44,6 +46,9 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
+// **Aplica el middleware de CORS**
+app.use(cors(corsOptions));
+app.use(express.json());
 
 // Rutas
 app.use('/api/login', loginRoute);
@@ -51,9 +56,9 @@ app.use('/api/logout', logoutRoute);
 app.use('/api/historial', historialRoute);
 app.use('/api/areas', areaRoutes);
 app.use('/api/admins', adminRoutes);
-app.use('/api/clients', clientRoutes); 
-app.use('/api/roles', roleRoutes); 
-app.use('/api/elements',elementRoutes);
+app.use('/api/clients', clientRoutes);
+app.use('/api/roles', roleRoutes);
+app.use('/api/elements', elementRoutes);
 app.use('/api/prestamos', prestamoCorrienteRoutes);
 app.use('/api/prestamosEs', prestamoEspecialRoutes);
 app.use('/api/consumos', consumoRoutes);
@@ -85,7 +90,7 @@ sequelize.sync()
   .then(() => console.log('Modelos sincronizados con la base de datos'))
   .catch((error) => console.error('Error syncing models:', error));
 
-// configuración 
+// Configuración del puerto
 app.set('port', config.app.port);
 
 export default app;
