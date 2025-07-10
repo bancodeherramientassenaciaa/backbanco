@@ -48,6 +48,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // <- 👈 Esto permite solicitudes OPTIONS (preflight)
 app.use(express.json());
 
 // *** Monta aquí **todas** tus rutas API ***

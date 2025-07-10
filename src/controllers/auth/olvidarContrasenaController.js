@@ -15,7 +15,6 @@ const sendRecoveryEmail = async (email, link) => {
             pass: config.email.pass,
         },
     });
-    
 
     await transporter.sendMail({
         to: email,
@@ -24,10 +23,10 @@ const sendRecoveryEmail = async (email, link) => {
     });
 };
 
-// Funcion para comparar el correo y documento de la persona que quiere recuperar su contraseña y enviarle un correo de recuperación si es verídco
+// Función para solicitar nueva contraseña
 const solicitarNuevaContrasena = async (req, res) => {
     try {
-        const { correo, documento } = req.body; 
+        const { correo, documento } = req.body;
         let usuario = '';
 
         if (!correo || !documento) {
@@ -35,99 +34,112 @@ const solicitarNuevaContrasena = async (req, res) => {
         }
 
         const admin = await Administrador.findOne({ where: { documento } });
-        const client = await Cliente.findOne({ where: { documento } }); 
-        
+        const client = await Cliente.findOne({ where: { documento } });
+
         if (admin) {
             if (admin.correo !== correo) {
-                return res.status(400).json({mensaje: 'El correo ingresado no coincide con el registrado'});
+                return res.status(400).json({ mensaje: 'El correo ingresado no coincide con el registrado' });
             } else {
                 usuario = admin;
             }
-        } else if (client){
-            const rol = await Rol.findOne({where: {idrol: client.roles_idrol}});
+        } else if (client) {
+            const rol = await Rol.findOne({ where: { idrol: client.roles_idrol } });
 
             if (rol.descripcion !== 'instructor') {
-                return res.status(400).json({ mensaje: 'No tienes acceso'});
+                return res.status(400).json({ mensaje: 'No tienes acceso' });
             }
 
             if (client.correo !== correo) {
-                return res.status(400).json({mensaje: 'El correo ingresado no coincide con el registrado'});
+                return res.status(400).json({ mensaje: 'El correo ingresado no coincide con el registrado' });
             } else {
                 usuario = client;
             }
         } else {
-            return res.status(400).json({mensaje: 'El documento ingresado no existe'});
+            return res.status(400).json({ mensaje: 'El documento ingresado no existe' });
         }
 
-        // Genera el token de recuperación con el correo, documento y fecha
-        const token = jwt.sign({
-            correo: usuario.correo,
-            documento: usuario.documento,
-            date: Date.now(),
-        }, config.jwt.secretnewcontrasena, { expiresIn: '10m' }); // Expira en 1 hora
+        const token = jwt.sign(
+            {
+                correo: usuario.correo,
+                documento: usuario.documento,
+                date: Date.now(),
+            },
+            config.jwt.secretnewcontrasena,
+            { expiresIn: '10m' }
+        );
 
         if (token) {
             const recoveryLink = `https://bancoherramientasciaa.vercel.app/restablecer-contrasena/${token}`;
             await sendRecoveryEmail(usuario.correo, recoveryLink);
         }
 
-        return res.status(200).json({mensaje: 'Se ha enviado un correo con el link de recuperación. Revisa tu bandeja de entrada, en caso de no encontrarlo revisa los correos no deseados o Spam'})
+        return res.status(200).json({
+            mensaje: 'Se ha enviado un correo con el link de recuperación. Revisa tu bandeja de entrada, en caso de no encontrarlo revisa los correos no deseados o Spam'
+        });
 
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({ mensaje: 'Error al enviar la solicitud de restablecer contraseña, por favor vuelva a intentarlo'});
+        console.log(error);
+        return res.status(500).json({ mensaje: 'Error al enviar la solicitud de restablecer contraseña, por favor vuelva a intentarlo' });
     }
-}
+};
 
+// Función para resetear la contraseña
 const resetContrasena = async (req, res) => {
     try {
         const { token, nuevaContrasena } = req.body;
 
         if (!nuevaContrasena) {
-            return res.status(400).json({ mensaje: 'La contraseña está vacía, por favor ingresa la nueva contraseña'})
+            return res.status(400).json({ mensaje: 'La contraseña está vacía, por favor ingresa la nueva contraseña' });
         }
-        // Verifica el token
-        jwt.verify(token, config.jwt.secretnewcontrasena, async (err, decoded) => {
-            if (err) {
-                return res.status(403).json({ mensaje: "Se ha vencido el tiempo para usar este link, debes volver a solicitar uno" });
-            }
-    
-            let usuario = '';
 
-            const admin = await Administrador.findOne({ where: { documento: decoded.documento } });
-            const client = await Cliente.findOne({ where: { documento: decoded.documento } }); 
-        
-            if (admin) {
-                if (admin.correo !== decoded.correo) {
-                    return res.status(400).json({mensaje: 'El correo ingresado no coincide con el registrado'});
-                } else {
-                    usuario = admin;
-                }
-            } else if (client){
-                const rol = await Rol.findOne({where: {idrol: client.roles_idrol}});
+        // ✅ Verifica el token usando try/catch (no callback)
+        const decoded = jwt.verify(token, config.jwt.secretnewcontrasena);
 
-                if (rol.descripcion !== 'instructor') {
-                    return res.status(400).json({ mensaje: 'No tienes acceso'});
-                }
+        let usuario = '';
 
-                if (client.correo !== decoded.correo) {
-                    return res.status(400).json({mensaje: 'El correo ingresado no coincide con el registrado'});
-                } else {
-                    usuario = client;
-                }
+        const admin = await Administrador.findOne({ where: { documento: decoded.documento } });
+        const client = await Cliente.findOne({ where: { documento: decoded.documento } });
+
+        if (admin) {
+            if (admin.correo !== decoded.correo) {
+                return res.status(400).json({ mensaje: 'El correo ingresado no coincide con el registrado' });
             } else {
-                return res.status(400).json({mensaje: 'El usuario al que intenta cambiar la contraseña no existe'});
+                usuario = admin;
             }
-    
-            usuario.contrasena = await bcrypt.hash(nuevaContrasena, 10); 
-            await usuario.save();   
+        } else if (client) {
+            const rol = await Rol.findOne({ where: { idrol: client.roles_idrol } });
 
-            return res.status(200).json({ mensaje: "Contraseña actualizada con éxito." });
-        });
+            if (rol.descripcion !== 'instructor') {
+                return res.status(400).json({ mensaje: 'No tienes acceso' });
+            }
+
+            if (client.correo !== decoded.correo) {
+                return res.status(400).json({ mensaje: 'El correo ingresado no coincide con el registrado' });
+            } else {
+                usuario = client;
+            }
+        } else {
+            return res.status(400).json({ mensaje: 'El usuario al que intenta cambiar la contraseña no existe' });
+        }
+
+        usuario.contrasena = await bcrypt.hash(nuevaContrasena, 10);
+        await usuario.save();
+
+        return res.status(200).json({ mensaje: "Contraseña actualizada con éxito." });
+
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({ mensaje: 'Error al crear la nueva contraseña, por favor vuelva a intentarlo'})
+        console.log(error);
+
+        // Manejo específico de errores de JWT
+        if (error.name === 'TokenExpiredError') {
+            return res.status(403).json({ mensaje: "El link ha expirado. Solicita uno nuevo." });
+        }
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(403).json({ mensaje: "Token inválido." });
+        }
+
+        return res.status(500).json({ mensaje: 'Error al crear la nueva contraseña, por favor vuelva a intentarlo' });
     }
-}
+};
 
 export { solicitarNuevaContrasena, resetContrasena };
