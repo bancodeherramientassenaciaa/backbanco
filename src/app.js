@@ -28,7 +28,7 @@ const app = express();
 
 // Configura CORS para permitir solo el dominio de tu frontend en Vercel
 const allowedOrigins = [
-  'https://bancoherramientasciaa.vercel.app',
+  'https://frontbanco.vercel.app',
   'https://frontbanco.vercel.app', // o el dominio generado en tu Vercel (ver en el dashboard)
 ];
 
