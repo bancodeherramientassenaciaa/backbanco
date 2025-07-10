@@ -6,19 +6,32 @@ import { fileURLToPath } from 'url';
 import sequelize from './db/connection.js';
 import config from './config/config.js';
 
+// Importa **todos** tus routers
 import loginRoute from './routes/auth/loginRouter.js';
-// import logoutRoute from './routes/auth/logoutRouter.js'; // Descomenta cuando esté listo
-import areaRouter from './routes/areaRouter.js';
+import logoutRoute from './routes/auth/logoutRouter.js';
+import areaRoutes from './routes/areaRouter.js';
+import historialRoute from './routes/historialRouter.js';
+import adminRoutes from './routes/administradorRouter.js';
+import clientRoutes from './routes/clienteRouter.js';
+import roleRoutes from './routes/rolRouter.js';
+import elementRoutes from './routes/elementoRouter.js';
+import prestamoCorrienteRoutes from './routes/prestamoCorrienteRouter.js';
+import prestamoEspecialRoutes from './routes/prestamoEspecialRouter.js';
+import consumoRoutes from './routes/consumoRouter.js';
+import moraRoutes from './routes/moraRouter.js';
+import danoRoutes from './routes/danoRouter.js';
+import bajaRoutes from './routes/bajaRouter.js';
+import encargoRoutes from './routes/encargoRouter.js';
+import olvidarContrasena from './routes/auth/olvidarContraseñaRouter.js';
+import importarExcel from './routes/excelRouter.js';
 
 const app = express();
 
-// 1) Defino orígenes permitidos
+// Configura CORS
 const allowedOrigins = [
   'https://frontbanco.vercel.app',
-  'https://frontbanco-mnwovbyl5-banco-de-herramientas-projects.vercel.app'
+  // añade aquí otros dominios de Vercel/Netlify si los tienes
 ];
-
-// 2) Opciones de CORS
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -30,33 +43,46 @@ const corsOptions = {
   allowedHeaders: ['Content-Type','Authorization']
 };
 
-// 3) Monteo CORS *antes* de las rutas
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// 4) Rutas
+// *** Monta aquí **todas** tus rutas API ***
 app.use('/api/login', loginRoute);
-// app.use('/api/logout', logoutRoute); // Comentado hasta que esté listo
-app.use('/api/areas', areaRouter);
+app.use('/api/logout', logoutRoute);
 
-// 5) Carpeta estática de uploads
+app.use('/api/historial', historialRoute);
+app.use('/api/areas', areaRoutes);
+app.use('/api/admins', adminRoutes);
+app.use('/api/clients', clientRoutes);
+app.use('/api/roles', roleRoutes);
+app.use('/api/elements', elementRoutes);
+app.use('/api/prestamos', prestamoCorrienteRoutes);
+app.use('/api/prestamosEs', prestamoEspecialRoutes);
+app.use('/api/consumos', consumoRoutes);
+app.use('/api/moras', moraRoutes);
+app.use('/api/danos', danoRoutes);
+app.use('/api/bajas', bajaRoutes);
+app.use('/api/encargos', encargoRoutes);
+app.use('/api/olvidar-contrasena', olvidarContrasena);
+app.use('/api/importar-excel', importarExcel);
+
+// Carpeta estática para subir/servir imágenes
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname  = path.dirname(__filename);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// 6) Comprobación BD y sync de modelos
+// Conexión y sincronización de la BD
 (async () => {
   try {
     await sequelize.authenticate();
-    console.log('Conexión establecida correctamente con la base de datos');
+    console.log('BD conectada correctamente');
     await sequelize.sync();
-    console.log('Modelos sincronizados con la base de datos');
+    console.log('Modelos sincronizados');
   } catch (err) {
-    console.error('Error con la base de datos:', err);
+    console.error('Error BD:', err);
   }
 })();
 
-// 7) Puerto
 app.set('port', config.app.port);
 
 export default app;
