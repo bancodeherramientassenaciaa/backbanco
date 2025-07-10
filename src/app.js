@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import sequelize from './db/connection.js';
 import config from './config/config.js';
 
-// Importa **todos** tus routers
+// Importa tus routers
 import loginRoute from './routes/auth/loginRouter.js';
 import logoutRoute from './routes/auth/logoutRouter.js';
 import areaRoutes from './routes/areaRouter.js';
@@ -22,7 +22,7 @@ import moraRoutes from './routes/moraRouter.js';
 import danoRoutes from './routes/danoRouter.js';
 import bajaRoutes from './routes/bajaRouter.js';
 import encargoRoutes from './routes/encargoRouter.js';
- import olvidarContrasena from './routes/auth/olvidarContrasenaRouter.js';
+import olvidarContrasena from './routes/auth/olvidarContrasenaRouter.js';
 import importarExcel from './routes/excelRouter.js';
 
 const app = express();
@@ -30,7 +30,7 @@ const app = express();
 // Configura CORS
 const allowedOrigins = [
   'https://frontbanco.vercel.app',
-  // añade aquí otros dominios de Vercel/Netlify si los tienes
+  'https://bancoherramientasciaa.vercel.app',
 ];
 
 const corsOptions = {
@@ -38,20 +38,20 @@ const corsOptions = {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      console.error('Bloqueado por CORS:', origin);
+      console.error('❌ Bloqueado por CORS:', origin);
       callback(new Error('No permitido por CORS'));
     }
   },
-  credentials: true, // importante si usas cookies o autenticación
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // <- 👈 Esto permite solicitudes OPTIONS (preflight)
+app.options('*', cors(corsOptions)); // Permite preflight
 app.use(express.json());
 
-// *** Monta aquí **todas** tus rutas API ***
+// Monta rutas
 app.use('/api/login', loginRoute);
 app.use('/api/logout', logoutRoute);
 app.use('/api/historial', historialRoute);
@@ -70,20 +70,20 @@ app.use('/api/encargos', encargoRoutes);
 app.use('/api/olvidar-contrasena', olvidarContrasena);
 app.use('/api/importar-excel', importarExcel);
 
-// Carpeta estática para subir/servir imágenes
+// Carpeta estática para imágenes
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Conexión y sincronización de la BD
+// Conexión a la BD
 (async () => {
   try {
     await sequelize.authenticate();
-    console.log('BD conectada correctamente');
+    console.log('✅ BD conectada correctamente');
     await sequelize.sync();
-    console.log('Modelos sincronizados');
+    console.log('✅ Modelos sincronizados');
   } catch (err) {
-    console.error('Error BD:', err);
+    console.error('❌ Error al conectar BD:', err);
   }
 })();
 
