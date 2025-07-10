@@ -22,7 +22,7 @@ import moraRoutes from './routes/moraRouter.js';
 import danoRoutes from './routes/danoRouter.js';
 import bajaRoutes from './routes/bajaRouter.js';
 import encargoRoutes from './routes/encargoRouter.js';
-import olvidarContrasena from './routes/auth/olvidarContraseñaRouter.js';
+ import olvidarContrasena from './routes/auth/olvidarContrasenaRouter.js';
 import importarExcel from './routes/excelRouter.js';
 
 const app = express();
