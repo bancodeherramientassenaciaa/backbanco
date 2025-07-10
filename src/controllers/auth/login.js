@@ -7,13 +7,24 @@ import { prestamosesManana } from '../prestamoEspecialController.js';
 
 //Login 
 const login = async (req, res) => {
+    const { documento, contrasena } = req.body; 
+    console.log(new Date())
 
-    const { documento, contrasena } = req.body; console.log(new Date())
+    // Validación de campos requeridos
+    if (!documento || !contrasena) {
+      return res.status(400).json({ mensaje: 'Faltan datos: documento y/o contraseña no enviados.' });
+    }
   
     try {
 
       const admin = await Administrador.findOne({ where: { documento } });
+      if (admin) {
+        console.log('Hash de contraseña almacenado:', admin.contrasena);
+      }
       const client = await Cliente.findOne({ where: { documento } });
+      if (client) {
+        console.log('Hash de contraseña almacenado (cliente):', client.contrasena);
+      }
 
       if(admin) {
 

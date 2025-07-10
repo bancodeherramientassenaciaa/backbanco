@@ -7,7 +7,7 @@ import sequelize from './db/connection.js';
 import config from './config/config.js';
 
 import loginRoute from './routes/auth/loginRouter.js';
-// ... importa aquí todas tus rutas
+// import logoutRoute from './routes/auth/logoutRouter.js'; // Descomenta cuando esté listo
 
 const app = express();
 
@@ -35,8 +35,7 @@ app.use(express.json());
 
 // 4) Rutas
 app.use('/api/login', loginRoute);
-app.use('/api/logout', /* ... */);
-// ... el resto de tus rutas
+// app.use('/api/logout', logoutRoute); // Comentado hasta que esté listo
 
 // 5) Carpeta estática de uploads
 const __filename = fileURLToPath(import.meta.url);

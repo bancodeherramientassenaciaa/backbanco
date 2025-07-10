@@ -4,6 +4,12 @@ import { authenticate, verifyType, verifyRole } from '../../middlewares/auth/aut
 
 const router = Router();
 
+router.get('/', (req, res) => {
+    res.json({ message: 'Login route funcionando correctamente' });
+});
+
+
+
 router.post('/', login);
 router.get('/validate-token', authenticate, (req, res) => {
     res.status(200).json({ message: 'Token válido' });
