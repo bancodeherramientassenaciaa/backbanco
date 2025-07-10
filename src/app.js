@@ -8,6 +8,7 @@ import config from './config/config.js';
 
 import loginRoute from './routes/auth/loginRouter.js';
 // import logoutRoute from './routes/auth/logoutRouter.js'; // Descomenta cuando esté listo
+import areaRouter from './routes/areaRouter.js';
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(express.json());
 // 4) Rutas
 app.use('/api/login', loginRoute);
 // app.use('/api/logout', logoutRoute); // Comentado hasta que esté listo
+app.use('/api/areas', areaRouter);
 
 // 5) Carpeta estática de uploads
 const __filename = fileURLToPath(import.meta.url);
