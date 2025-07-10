@@ -6,7 +6,7 @@ const config = {
         port: process.env.PORT
     }, 
     jwt: {
-        secret: process.env.JET_SECRET,
+        secret: process.env.JWT_SECRET,
         secretnewcontrasena: process.env.JWT_SECRET_RESTABLECER_CONTRASENA
     },
     mysql: {
