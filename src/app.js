@@ -32,15 +32,19 @@ const allowedOrigins = [
   'https://frontbanco.vercel.app',
   // añade aquí otros dominios de Vercel/Netlify si los tienes
 ];
+
 const corsOptions = {
-  origin: (origin, callback) => {
+  origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
+      callback(null, true);
+    } else {
+      console.error('Bloqueado por CORS:', origin);
+      callback(new Error('No permitido por CORS'));
     }
-    callback(new Error('Not allowed by CORS: ' + origin));
   },
-  methods: ['GET','POST','PUT','DELETE'],
-  allowedHeaders: ['Content-Type','Authorization']
+  credentials: true, // importante si usas cookies o autenticación
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));
@@ -49,7 +53,6 @@ app.use(express.json());
 // *** Monta aquí **todas** tus rutas API ***
 app.use('/api/login', loginRoute);
 app.use('/api/logout', logoutRoute);
-
 app.use('/api/historial', historialRoute);
 app.use('/api/areas', areaRoutes);
 app.use('/api/admins', adminRoutes);
@@ -68,7 +71,7 @@ app.use('/api/importar-excel', importarExcel);
 
 // Carpeta estática para subir/servir imágenes
 const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);
+const __dirname = path.dirname(__filename);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Conexión y sincronización de la BD
