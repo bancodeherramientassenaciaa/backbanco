@@ -6,6 +6,11 @@ import {
 
 const router = Router();
 
+// ✅ Endpoint de prueba para verificar que el router funciona
+router.get('/test', (req, res) => {
+    res.json({ mensaje: 'Router de olvidar contraseña funcionando correctamente', timestamp: new Date() });
+});
+
 // Endpoint para solicitar el envío de correo con token
 router.post('/solicitar-restablecer', solicitarNuevaContrasena);
 
