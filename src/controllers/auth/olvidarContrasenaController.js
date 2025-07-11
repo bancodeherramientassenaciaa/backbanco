@@ -85,6 +85,12 @@ const solicitarNuevaContrasena = async (req, res) => {
 
 // Función para resetear la contraseña
 const resetContrasena = async (req, res) => {
+    console.log('🔍 resetContrasena llamado:', {
+        body: req.body,
+        token: req.body.token?.substring(0, 20) + '...',
+        timestamp: new Date()
+    });
+    
     try {
         const { token, nuevaContrasena } = req.body;
 
