@@ -30,7 +30,7 @@ const app = express();
 // Configura CORS
 const allowedOrigins = [
   'https://frontbanco.vercel.app',
-  'https://bancoherramientasciaa.vercel.app',
+  'https://bancoherramientasciaa.vercel.app' // Dominio del frontend que genera el error
 ];
 
 const corsOptions = {
@@ -43,8 +43,9 @@ const corsOptions = {
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  optionsSuccessStatus: 200 // Para soportar navegadores legacy
 };
 
 app.use(cors(corsOptions));
