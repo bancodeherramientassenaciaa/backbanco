@@ -26,4 +26,14 @@ router.post('/solicitar-restablecer', solicitarNuevaContrasena);
 // ✅ Endpoint para restablecer la contraseña (nombre corregido)
 router.post('/restablecer-contrasena', resetContrasena);
 
+// ✅ Endpoint simplificado de prueba para restablecer contraseña
+router.post('/restablecer-test', (req, res) => {
+    console.log('🔍 restablecer-test llamado:', req.body);
+    res.json({ 
+        mensaje: 'Endpoint de restablecer funcionando', 
+        body: req.body,
+        timestamp: new Date() 
+    });
+});
+
 export default router;
