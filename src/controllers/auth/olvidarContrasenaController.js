@@ -69,7 +69,7 @@ const solicitarNuevaContrasena = async (req, res) => {
         );
 
         if (token) {
-            const recoveryLink = `https://bancoherramientasciaa.vercel.app/restablecer-contrasena/${token}`;
+            const recoveryLink = `http://frontbanco.vercel.app/restablecer-contrasena/${token}`;
             await sendRecoveryEmail(usuario.correo, recoveryLink);
         }
 
