@@ -37,11 +37,12 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-  origin: true, // Permitir todos los orígenes temporalmente
-  credentials: true,
+  origin: '*', // Permitir TODOS los orígenes
+  credentials: false, // Temporalmente sin credenciales
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  preflightContinue: false
 };
 
 app.use(cors(corsOptions));
