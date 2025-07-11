@@ -30,7 +30,10 @@ const app = express();
 // Configura CORS
 const allowedOrigins = [
   'https://frontbanco.vercel.app',
-  'https://bancoherramientasciaa.vercel.app' // Dominio del frontend que genera el error
+  'https://bancoherramientasciaa.vercel.app', // Dominio del frontend que genera el error
+  'http://localhost:5173', // Para desarrollo local
+  'http://localhost:3000', // Para desarrollo local alternativo
+  'http://127.0.0.1:5173'  // Para desarrollo local IP
 ];
 
 const corsOptions = {
