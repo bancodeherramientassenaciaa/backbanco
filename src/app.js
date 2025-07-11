@@ -29,20 +29,17 @@ const app = express();
 
 // Configura CORS
 const allowedOrigins = [
-  'https://frontbanco.vercel.app',  // URL principal
-  'http://frontbanco.vercel.app',   // URL principal (http)
-  'http://localhost:5173',          // Para desarrollo local
-  'http://localhost:3000',          // Para desarrollo local alternativo
-  'http://127.0.0.1:5173'           // Para desarrollo local IP
+  'https://frontbanco.vercel.app',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173'
 ];
 
 const corsOptions = {
-  origin: '*', // Permitir TODOS los orígenes
-  credentials: false, // Temporalmente sin credenciales
+  origin: allowedOrigins,
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
   optionsSuccessStatus: 200,
-  preflightContinue: false
 };
 
 app.use(cors(corsOptions));
