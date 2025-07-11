@@ -37,7 +37,7 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-  origin: true, // Temporalmente permitir todos los orígenes para testing
+  origin: true, // Permitir todos los orígenes temporalmente
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
