@@ -78,4 +78,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.set('port', config.app.port);
 
+// Minor change to trigger deployment
+console.log('Triggering new deployment');
+// Another minor change to ensure deployment is triggered
+console.log('Forcing deployment trigger');
+
 export default app;
