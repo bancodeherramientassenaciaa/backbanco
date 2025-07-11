@@ -28,14 +28,8 @@ import importarExcel from './routes/excelRouter.js';
 const app = express();
 
 // Configura CORS
-const allowedOrigins = [
-  'https://frontbanco.vercel.app',
-  'http://localhost:5173',
-  'http://127.0.0.1:5173'
-];
-
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: '*', // Permitir todos los orígenes
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
