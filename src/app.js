@@ -9,6 +9,7 @@ import config from './config/config.js';
 // Importa tus routers
 import loginRoute from './routes/auth/loginRouter.js';
 import logoutRoute from './routes/auth/logoutRouter.js';
+import checkFirstDeployRoute from './routes/auth/checkFirstDeployRouter.js';
 import areaRoutes from './routes/areaRouter.js';
 import historialRoute from './routes/historialRouter.js';
 import adminRoutes from './routes/administradorRouter.js';
@@ -33,6 +34,8 @@ const corsOptions = {
     'http://localhost:5173', 
     'http://localhost:5174', 
     'http://localhost:3000',
+    'http://26.95.85.140:5173',    // IP Radmin VPN
+    'http://172.30.5.184:5173',    // IP Red Local
     'https://frontbanco.vercel.app',
     'https://frontbanco-git-main-bancodeherramientassenaciaa.vercel.app',
     'https://frontbanco-bancodeherramientassenaciaa.vercel.app'
@@ -50,6 +53,7 @@ app.use(express.json());
 // Monta rutas
 app.use('/api/login', loginRoute);
 app.use('/api/logout', logoutRoute);
+app.use('/api/check-first-deploy', checkFirstDeployRoute);
 app.use('/api/historial', historialRoute);
 app.use('/api/areas', areaRoutes);
 app.use('/api/admins', adminRoutes);
