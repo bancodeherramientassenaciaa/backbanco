@@ -29,7 +29,14 @@ const app = express();
 
 // Configura CORS
 const corsOptions = {
-  origin: '*', // Permitir todos los orígenes
+  origin: [
+    'http://localhost:5173', 
+    'http://localhost:5174', 
+    'http://localhost:3000',
+    'https://frontbanco.vercel.app',
+    'https://frontbanco-git-main-bancodeherramientassenaciaa.vercel.app',
+    'https://frontbanco-bancodeherramientassenaciaa.vercel.app'
+  ], // URLs específicas permitidas
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
