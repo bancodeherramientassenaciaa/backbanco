@@ -1,18 +1,17 @@
 import { Router } from 'express';
 import login from '../../controllers/auth/login.js';
-import { authenticate, verifyType, verifyRole } from '../../middlewares/auth/authMiddleware.js';
+import { authenticate } from '../../middlewares/auth/authMiddleware.js';
 
 const router = Router();
 
 router.get('/', (req, res) => {
-    res.json({ message: 'Login route funcionando correctamente' });
+  res.json({ message: 'Login route funcionando correctamente' });
 });
 
-
-
 router.post('/', login);
+
 router.get('/validate-token', authenticate, (req, res) => {
-    res.status(200).json({ message: 'Token válido' });
+  res.status(200).json({ message: 'Token válido' });
 });
 
 export default router;

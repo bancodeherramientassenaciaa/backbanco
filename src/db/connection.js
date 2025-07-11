@@ -6,6 +6,12 @@ const dbUrl = `mysql://${config.mysql.user}:${config.mysql.password}@${config.my
 const sequelize = new Sequelize(dbUrl, {
   dialect: 'mysql', 
   logging: false, 
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
 });
 
 export default sequelize;
