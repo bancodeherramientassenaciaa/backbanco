@@ -4,6 +4,11 @@ import { authenticate } from '../../middlewares/auth/authMiddleware.js';
 
 const router = Router();
 
+// Manejar preflight OPTIONS explícitamente
+router.options('/', (req, res) => {
+  res.status(200).end();
+});
+
 router.get('/', (req, res) => {
   res.json({ message: 'Login route funcionando correctamente' });
 });
