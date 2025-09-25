@@ -11,16 +11,16 @@ Baja.init ({
         primaryKey: true,
         autoIncrement: true
     },
-    elementos_idelemento: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {  
-          model: Elemento,
-          key: 'idelemento'
-        },
-        onUpdate: 'SET NULL',
-        onDelete: 'SET NULL'
-    }, 
+        elementos_idelemento: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+                references: {  
+                    model: Elemento,
+                    key: 'idelemento'
+                },
+                onUpdate: 'SET NULL',
+                onDelete: 'SET NULL'
+        }, 
     tipo: {
         type: DataTypes.ENUM('reintegro', 'traspaso'),
         allowNull: false
